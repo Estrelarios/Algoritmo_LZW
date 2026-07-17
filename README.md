@@ -1,0 +1,1 @@
+Implementa o algoritmo LZW fora de bibliotecas, é possivel comprimir uma imagem para 144p,  360p e 1080p
