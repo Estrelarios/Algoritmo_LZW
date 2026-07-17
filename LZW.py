@@ -26,7 +26,7 @@ def executar_lzw_imagem():
         '3': (1920, 1080)
     }
 
-    # Define a lista de resoluções a serem processadas
+    # Lista de resoluções a serem processadas
     if opcao == '9':
         lista_processamento = ['144', '360', '1080']
 
@@ -39,7 +39,7 @@ def executar_lzw_imagem():
         print("Opção de resolução inválida! Encerrando...")
         return
 
-    # Inicia o processamento 
+
     for res_atual in lista_processamento:
         largura, altura = resolucoes[res_atual]
 
@@ -63,7 +63,7 @@ def executar_lzw_imagem():
 
     #######################################################
 
-        # começa o LZW
+        # começa o LZW em si
 
         # "4. Inicializar o dicionário com os valores de 0 a 255."
         tamanho_dicionario = 256
@@ -72,8 +72,6 @@ def executar_lzw_imagem():
         # "3. Aplicar o algoritmo LZW sobre esse vetor"
         w = ()
         sequencia_codificada = []
-
-        print(f"\nComprimindo a imagem em {res_atual}p. Isso pode levar alguns segundos...")
 
         # Preenche o dicionário e gera a sequência codificada
         # " 5. Gerar a sequência codificada"
@@ -87,7 +85,7 @@ def executar_lzw_imagem():
                 tamanho_dicionario += 1
                 w = (pixel,)
 
-        # Adicionar o último padrão restante
+        # Adiciona o último padrão 
         if w:
             sequencia_codificada.append(dicionario[w])
 
@@ -116,6 +114,7 @@ def executar_lzw_imagem():
         6.10 Porcentagem de compressão.
 
         """
+        # Salva tudo em uma string pra depois de printar salvar tudo de uma vez (opção 9)
         saida_texto = f"\n{'='*50}\n"
         saida_texto += "SAÍDAS LZW\n"
         saida_texto += f"{'='*50}\n"
@@ -125,10 +124,12 @@ def executar_lzw_imagem():
         saida_texto += f"Quantidade total de pixels: {quantidade_pixels}\n"
         
         # 6.4 Vetor original de pixels
+        # Para não crashar o terminal em imagens hd, mostra so primeiros e últimos elementos
         saida_texto += f"\nVetor original de pixels (começo): {vetor_pixels[:50]}...\n\n"
         saida_texto += f"Vetor original de pixels (final): {vetor_pixels[-50:]}\n"
         
         # 6.5 Dicionário final gerado
+        # imprime as ultimas 20 entradas como prova (mais que isso começa a ficar grande demais e pode morrer o terminal)
         saida_texto += f"\nDicionário final gerado (Total de chaves: {tamanho_dicionario})\n"
         saida_texto += "Últimas 20 sequências adicionadas:\n"
         ultimas_entradas = list(dicionario.items())[-20:]
@@ -137,7 +138,7 @@ def executar_lzw_imagem():
 
         # 6.6 Sequência codificada
         saida_texto += f"\nSequência codificada (começo): {sequencia_codificada[:50]}...\n"
-        saida_texto += f"Sequência codificada (final)...: ...{sequencia_codificada[-50:]}\n"
+        saida_texto += f"Sequência codificada (final){sequencia_codificada[-50:]}\n"
         
         # 6.7, 6.8 e 6.9 Tamanhos
         saida_texto += f"\nTamanho da mensagem original.: {tamanho_mensagem_original} valores\n"
@@ -148,13 +149,14 @@ def executar_lzw_imagem():
         if porcentagem_compressao > 0:
             saida_texto += f"Porcentagem de compressão....: {porcentagem_compressao:.2f}% (Redução de tamanho)\n"
         else:
+            # imagem não foi comprimida, tinha muito ruído -> alg nao foi eficiente então aumentou de tamanho
             saida_texto += f"Porcentagem de compressão....: {porcentagem_compressao:.2f}% (Aumento de tamanho)\n"
         saida_texto += f"{'='*50}\n"
 
-        # Imprime no terminal a mesma saída de sempre
+    
         print(saida_texto)
 
-        # Se a opção 9, também gera os arquivos de saída de cada resoluçãp em formato .txt 
+        # Se opção 9, também gera os arquivos de saída de cada resoluçãp em formato .txt 
         if opcao == '9':
             nome_arquivo = f"saida_LZW_{res_atual}p.txt"
             try:
